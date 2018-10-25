@@ -1,0 +1,13 @@
+<% cities_data.each do |city| %>
+  <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4 mb-4">
+    <div class="card text-center">
+      <div class="card-header">
+        <%= city[:timezone] %>
+      </div>
+      <div class="card-body">
+        <h3 class="card-title"><%= city[:time] %></h3>
+        <p class="card-text"><%= city[:temperature] %> Celsius</p>
+      </div>
+    </div>     
+  </div>
+<% end %>
