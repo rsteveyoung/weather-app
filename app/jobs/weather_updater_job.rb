@@ -28,9 +28,11 @@ class WeatherUpdaterJob < ApplicationJob
   def get_city_data(city) 
     city = JSON.parse($redis.get(city))
 
-    # begin
-    weather = get_weather(city["lat"], city["lon"])
-    # end while weather == false
+    begin
+      weather = get_weather(city["lat"], city["lon"])
+      raise Error if !weather
+    end while !weather
+
 
     unix_time = "#{weather.currently.time}"    
     date_time = "#{DateTime.strptime(unix_time,'%s').strftime("%H:%M:%S %p")}"    
@@ -44,7 +46,7 @@ class WeatherUpdaterJob < ApplicationJob
   
   def get_weather(lat, lon)
     if rand(1..10) == 1 
-      raise Error
+      return false
     end
 
     ForecastIO.forecast(lat, lon, params: { units: 'si' })
